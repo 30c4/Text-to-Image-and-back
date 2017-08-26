@@ -102,11 +102,11 @@ def encode():
     g = []
     b = []
 
-    zin = input("Type something: ")
+    sentence = input("Type something: ")
 
     # Put the letters in rgb order
     count = 1
-    for l in zin:
+    for l in sentence:
 
         if count == 1:
             r.append(en[l])
@@ -128,7 +128,9 @@ def encode():
     for x in range(len(r)):
         img.putpixel((x, 0), (int(r[x]), int(g[x]), int(b[x])))
 
-    img.save("message.png", "PNG")
+    filename = input("What will be the name of the file: ")
+
+    img.save(filename+".png", "PNG")
     img.show()
     print("encoding succesful")
 
@@ -138,29 +140,37 @@ def decode():
     g = []
     b = []
 
+    filename = input("Which file to open: ")
+
     # opens the image and places the RGB values of the pixels in their lists
-    img = Image.open("message.png")
-    for x in range(img.size[0]):
-        rint, gint, bint = img.getpixel((x,0))
-        r.append(rint)
-        g.append(gint)
-        b.append(bint)
+    try:
+        img = Image.open("{}.png".format(filename))
 
-    dek = list(en.keys())
-    dev = list(en.values())
+        for x in range(img.size[0]):
+            rint, gint, bint = img.getpixel((x,0))
+            r.append(rint)
+            g.append(gint)
+            b.append(bint)
 
-    zin = ""
+        dek = list(en.keys())
+        dev = list(en.values())
 
-    # checks the values for their keys
-    for l in range(len(r)):
-        zin += dek[dev.index(str(r[l]))]
-        zin += dek[dev.index(str(g[l]))]
-        zin += dek[dev.index(str(b[l]))]
+        zin = ""
 
-    print(zin)
+        # checks the values for their keys
+        for l in range(len(r)):
+            zin += dek[dev.index(str(r[l]))]
+            zin += dek[dev.index(str(g[l]))]
+            zin += dek[dev.index(str(b[l]))]
+
+        print(zin)
+
+    except:
+        print("No such file!")
 
 
 while True:
+    print("Welcome to the Text encoder/decoder, Type 'encode' or 'decode' to begin")
     com = input("> ")
     if com == "encode":
         encode()
